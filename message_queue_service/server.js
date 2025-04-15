@@ -57,7 +57,7 @@ async function callStreamingAPI(groupId, question) {
         const response = await axios({
             method: "POST", // Hoặc "POST" nếu API yêu cầu
             url: process.env.AGENT_SERVICE_URL,
-            data: { question }, // Gửi câu hỏi theo query string (nếu API hỗ trợ)
+            data: { query: question }, // Gửi câu hỏi theo query string (nếu API hỗ trợ)
             responseType: "stream",
         });
 
