@@ -1,0 +1,53 @@
+pipeline {
+    environment {
+        REGISTRY_HOST = "registry.jee.vn"
+        REGISTRY_PUBLISHER = "huit-ai"
+        REGISTRY_CRED = "registry"
+        PROJECT_NAME = "huit-chatbot-message-queue"
+        
+        REMOTE_URL = "https://jenkins.dev.huit.vn/view/all/job/FE-31.1.QA_Chatbot/build"
+        REMOTE_BUILD_TOKEN = "wTZbRseliG9jx4r6aCJyw9dGBalO24kRVoEcajfkh9Iv3VCSSsJTOWQTTdP3tIQJ"
+
+        service = ""
+    }
+    agent any
+    stages {
+        stage('Clone repository') {
+            steps {
+                script {
+                    checkout scm
+                }
+            }
+        }
+        stage('Build image') {
+            steps {
+                script {
+                    dir("message_queue_service"){
+                        service = docker.build("${REGISTRY_HOST}/${REGISTRY_PUBLISHER}/${PROJECT_NAME}:latest")
+                    }
+                }
+            }
+        }
+        stage('Push image') {
+            steps {
+                script {
+                    docker.withRegistry("https://${REGISTRY_HOST}", REGISTRY_CRED) {
+                        service.push("latest")
+                    }
+                }
+            }
+        }
+        stage('Call Remote') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'jenkin_huit_dev', usernameVariable: "USERNAME", passwordVariable: "PASSWORD")]) {
+                        sh """
+                            curl -u ${USERNAME}:${PASSWORD} -X GET \
+                            ${REMOTE_URL}?token=${REMOTE_BUILD_TOKEN}
+                        """
+                    }
+                }
+            }
+        }
+    }
+}
