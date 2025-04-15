@@ -1,0 +1,7 @@
+openai
+chromadb
+fastapi==0.115.8
+fastapi-cli==0.0.7
+PyPDF2
+python-dotenv
+tqdm

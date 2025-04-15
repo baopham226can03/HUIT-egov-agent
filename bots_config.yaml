@@ -1,0 +1,9 @@
+bots:
+  - name: "Hướng dẫn sử dụng Bình Thuận"
+    data_path: "data/BinhThuan"
+    collection_name: "binhthuan_collection"
+    description: "Chứa các hướng dẫn về cách sử dụng, các thông tin chi tiết về ứng dụng của egov tỉnh Bình Thuận"
+  - name: "Cẩm nang tuyển sinh"
+    data_path: "data/TuyenSinh"
+    collection_name: "tuyensinh_collection"
+    description: "Chứa các thông tin về tuyển sinh trường đại học Công Thương TPHCM, các thông tin chi tiết như các ngành đào tạo, điểm,..."
